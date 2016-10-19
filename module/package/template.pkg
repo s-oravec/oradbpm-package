@@ -1,0 +1,12 @@
+create or replace package template as
+
+
+
+end;
+/
+create or replace package body template as
+
+
+end;
+/
+
