@@ -1,0 +1,20 @@
+create or replace package oradbpm_template as
+
+    -- Package SQL Name compatible version
+    SQL_VERSION    constant varchar2(30) := '&&g_sql_version';
+
+    -- Semver version
+    SEMVER_VERSION constant varchar2(30) := '&&g_semver_version';
+
+    function major_version return varchar2;
+    function minor_version return varchar2;
+    function patch_version return varchar2;
+
+end;
+/
+create or replace package body oradbpm_template as
+
+
+end;
+/
+

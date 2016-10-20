@@ -5,3 +5,5 @@ placeholder for other OraDBPM Packages, required as
 - production dependencies
     - peer
     - public
+    
+The packages would be downloaded here and installed before your package

@@ -1,7 +1,7 @@
 {
-  "name": "oradbpm-package",
+  "name": "template",
   "version": "0.0.1",
-  "description": "Sample OraDBPM Package implementation",
+  "description": "OraDBPM Package template",
   "author" : "Štefan Oravec <stefan.oravec@me.com>",
   "license": "MIT",
   "repository": {
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/s-oravec/oradbpm-package.git"
   },
   "keywords": [
-    "SQL", "SQL*Plus", "SQL Plus", "Oracle"
+    "SQL", "SQL*Plus", "SQL Plus", "SQLcl", "Oracle"
   ],
   "bugs": {
     "url": "https://github.com/s-oravec/oradbpm-package/issues"
