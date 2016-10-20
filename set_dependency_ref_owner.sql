@@ -2,7 +2,7 @@ rem
 rem Creates synonyms for your public API (packages, views, ...) in user which is using your package
 rem
 rem Usage
-rem     sql @set_dependency_ref_owner.sql <schema name>
+rem     SQL > @set_dependency_ref_owner.sql <schema name>
 rem
 rem Options
 rem

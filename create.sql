@@ -2,7 +2,7 @@ rem
 rem Creates package schema/schemas
 rem
 rem Usage
-rem     sql @create.sql <configuration>
+rem     SQL > @create.sql <configuration>
 rem
 rem Options
 rem

@@ -2,7 +2,7 @@ rem
 rem Drops synonyms for your public API (packages, views, ...) in user which is using your package
 rem
 rem Usage
-rem     sql @unset_dependency_ref_owner.sql <schema name>
+rem     SQL > @unset_dependency_ref_owner.sql <schema name>
 rem
 rem Options
 rem

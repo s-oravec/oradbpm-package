@@ -27,7 +27,7 @@ prompt Loaded package
 prompt package name      = &&g_package_name
 prompt sql version       = &&g_sql_version
 prompt semver version    = &&g_semver_version
-prompt schema name       = &&g_schema_name
+prompt default schema    = &&g_schema_name
 prompt schema password   = ********
 prompt schema tablespace = &&g_schema_tbspc
 prompt temp tablespace   = &&g_temp_tbspc

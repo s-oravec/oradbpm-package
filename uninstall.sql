@@ -2,7 +2,7 @@ rem
 rem uninstall package
 rem
 rem Usage
-rem     sql @uninstall.sql
+rem     SQL > @uninstall.sql
 rem
 rem Load package
 @@package.sql

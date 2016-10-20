@@ -2,7 +2,7 @@ rem
 rem Drops package schema/schemas
 rem
 rem Usage
-rem     sql @drop.sql <configuration>
+rem     SQL > @drop.sql <configuration>
 rem
 rem Options
 rem

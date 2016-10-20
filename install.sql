@@ -2,7 +2,7 @@ rem
 rem install package
 rem
 rem Usage
-rem     sql @install.sql <privileges>
+rem     SQL > @install.sql <privileges>
 rem
 rem Options
 rem

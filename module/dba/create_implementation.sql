@@ -7,5 +7,5 @@ create user &&l_schema_name
   account unlock
 /
 
-prompt Schema grants
-@@grant.sql
+prompt Grant schema privileges
+@@grant_schema.sql &&l_schema_name
