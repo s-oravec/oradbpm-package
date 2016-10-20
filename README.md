@@ -24,5 +24,7 @@ Expose your module version as
 
 * `VERSION` constant
 * `packge_version` method - returning that constant
+
+## Your package should implement _command__ scripts
  
 
