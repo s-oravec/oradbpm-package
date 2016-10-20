@@ -191,6 +191,8 @@ $ sqlplus <userUsingYourPackage>/<password>@<connectString> @create_synonyms <pu
 
 drop synonyms
 
+g_schema_name
+
 ```
 $ sqlplus <userName>/<password>@<connectString> @drop_synonyms <publicPackageSchema>
 ```
