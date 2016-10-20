@@ -1,0 +1,11 @@
+create or replace package template_impl as
+
+
+end;
+/
+create or replace package body template_impl as
+
+
+end;
+/
+

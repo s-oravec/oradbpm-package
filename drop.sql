@@ -2,20 +2,24 @@ rem
 rem Drops package schema/schemas
 rem
 rem Usage
-rem     sql @drop.sql <environment>
+rem     sql @drop.sql <configuration>
 rem
 rem Options
 rem
-rem     environment - development - drops <g_schema_name_base>_DEV  schema for development and testing package
-rem                 - production  - drops <g_schema_name_base>
+rem     configuration - manual     - asks for configuration parameters
+rem                   - configured - supplied configuration is used
 rem
 set verify off
-define g_environment = "&1"
+define l_configuration = "&1"
 
-prompt Load package
+rem Load package
 @@package.sql
 
-prompt Create schemas
-@@module/dba/create_&&g_environment..sql
+prompt Drop schemas
+@@module/dba/drop_&&l_configuration..sql
 
-exit
+rem undefine script locals
+undefine l_configuration
+
+rem undefine package globals
+@module/undefine_globals.sql

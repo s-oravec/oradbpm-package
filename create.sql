@@ -2,20 +2,24 @@ rem
 rem Creates package schema/schemas
 rem
 rem Usage
-rem     sql @create.sql <environment>
+rem     sql @create.sql <configuration>
 rem
 rem Options
 rem
-rem     environment - development - creates <g_schema_name_base>_DEV  schema for development and testing package
-rem                 - production  - creates <g_schema_name_base>
+rem     configuration - manual     - asks for configuration parameters
+rem                   - configured - supplied configuration is used
 rem
 set verify off
-define g_environment = "&1"
+define l_configuration = "&1"
 
-prompt Load package
+rem Load package
 @@package.sql
 
 prompt Create schemas
-@@module/dba/create_&&g_environment..sql
+@@module/dba/create_&&l_configuration..sql
 
-exit
+rem undefine script locals
+undefine l_configuration
+
+rem undefine package globals
+@module/undefine_globals.sql

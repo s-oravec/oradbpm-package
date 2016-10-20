@@ -12,7 +12,7 @@ This repo represents template of released version of OraDBPM Package. This is, h
 * No dynamic scripts - only dynamic calls based on configuration like 
 
 ```
-@module/dba/install_&&g_environment..sql
+@module/api/grant_&&g_privileges..sql
 ```
 
 # Package definition - oradbpm_package.json
@@ -80,8 +80,8 @@ Place these scripts in a package root directory.
 
 * always undefine what you have defined
 * use some naming for scope
-    * `g_` or `<packageName>_` for global scope 
-    * `m_` for module scope
+    * `g_` or `<packageName>_` for global scope - try not to overuse globals
+    * `m_<packageName>_` for module scope
     * `l_` for local scope = script. Make sure that you have undefined them at the end of the script
 
 ### create
@@ -190,8 +190,6 @@ $ sqlplus <userUsingYourPackage>/<password>@<connectString> @create_synonyms <pu
 ### drop_synonyms
 
 drop synonyms
-
-g_schema_name
 
 ```
 $ sqlplus <userName>/<password>@<connectString> @drop_synonyms <publicPackageSchema>

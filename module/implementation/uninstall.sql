@@ -1,1 +1,3 @@
-drop package opm_template.pkg
+prompt .. Dropping package TEMPLATE_IMPL
+drop package template_impl;
+

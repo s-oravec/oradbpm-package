@@ -1,2 +1,2 @@
-@@package/opm_package.pkg
-
+prompt .. Creating package TEMPLATE_IMPL
+@@package/template_impl.pkg
