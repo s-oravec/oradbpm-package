@@ -153,44 +153,26 @@ $ sqlplus <userName>/<password>@<connectString> @install <privileges>
 
 ### uninstall
 
-- script is intended to be run in target schema, where is your package installed
+Uninstalls package.
+
+Script is intended to be run in target schema, where is your package installed
 
 ```
 $ sqlplus <userName>/<password>@<connectString> @uninstall
 ```
 
-### install_test
-
-- script is 
-
-```
-$ sqlplus <testUserName>/<password>@<connectString> @install_test
-```
-
-### uninstall_test
-
-```
-$ sqlplus <userName>/<password>@<connectString> @uninstall_test
-```
-
-### test
-
-```
-$ sqlplus <userName>/<password>@<connectString> @test
-```
-
-### create_synonyms
+### set\_dependency\_ref\_owner
 
 creates synonyms for your public API (packages, views, ...) in user which is using your package
 
 ```
-$ sqlplus <userUsingYourPackage>/<password>@<connectString> @create_synonyms <publicPackageSchema>
+$ sqlplus <userUsingYourPackage>/<password>@<connectString> @set_dependency_ref_owner <publicPackageSchema>
 ```
 
-### drop_synonyms
+### unset\_dependency\_ref\_owner
 
-drop synonyms
+drop synonyms for your public API
 
 ```
-$ sqlplus <userName>/<password>@<connectString> @drop_synonyms <publicPackageSchema>
+$ sqlplus <userUsingYourPackage>/<password>@<connectString> @unset_dependency_ref_owner <publicPackageSchema>
 ```
