@@ -28,4 +28,4 @@ rem undefine locals
 undefine l_privileges
 
 rem undefine package globals
-@module/undefine_globals.sql
+@@undefine_globals.sql

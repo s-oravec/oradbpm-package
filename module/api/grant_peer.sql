@@ -1,1 +1,1 @@
-rem Place 12c white list grants here
+rem nothing here

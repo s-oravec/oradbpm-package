@@ -14,4 +14,4 @@ prompt Uninstall package API
 @module/api/uninstall.sql
 
 rem undefine package globals
-@module/undefine_globals.sql
+@@undefine_globals.sql

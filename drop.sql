@@ -22,4 +22,4 @@ rem undefine script locals
 undefine l_configuration
 
 rem undefine package globals
-@module/undefine_globals.sql
+@@undefine_globals.sql

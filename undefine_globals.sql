@@ -1,9 +1,8 @@
 prompt Undefine globals
-undefine g_package_name
 
+undefine g_package_name
 undefine g_sql_version
 undefine g_semver_version
-
 undefine g_schema_name
 undefine g_schema_pwd
 undefine g_schema_tbspc
