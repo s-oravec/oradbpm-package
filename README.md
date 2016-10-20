@@ -26,6 +26,19 @@ Choose well as you may stick with it for a long time. It should be
 * short - you need to install it in Oracle DB - so 30 chars is max length (think also about appending version string to package name to create schema with version identification: e.g. APEX_050000)
 * has to be Oracle SQL Name
 
+Set global substitution variable in `package.sql`
+
+```
+define g_package_name = "<packageName>"
+```
+
+And also expose package name using constant in package `<packageName>`
+
+```
+-- Package name
+PACKAGE_NAME constant varchar2(30) := '&&g_package_name';
+```
+
 # Version
 
 **Use semantic versioning**
@@ -50,29 +63,39 @@ rem full semver version string
 define g_semver_version = "0.1.0"
 ```
 
-**Your package should expose it's version as constant and function**
+**Your package should expose it's version as constant and function in <packageName> package**
 
-Create package `module/schema/package/opm_<packageName>` grant execute on it to public.
+Create package `module/api/package/<packageName>`.
 
 Expose your module version as
 
-* `VERSION` constant
-* `packge_version` method - returning that constant
+```
+-- Package SQL Name compatible version
+SQL_VERSION    constant varchar2(30) := '&&g_sql_version';
+-- Semver version
+SEMVER_VERSION constant varchar2(30) := '&&g_semver_version';
+```
 
 # Command scripts
 
 Command scripts are **SQL*Plus** scripts, implementing common package use cases.
 Place these scripts in a package root directory.
 
-- create - create schemas
-- drop - drop schemas
+**privileged user commands**
+
+- create - create schemas of public package
+- drop - drop schemas of public package
+- grant - grant required privileges to `packageSchema` when installing into existing schema
+
+**package schema commnads**
+
 - install - create package objects
 - uninstall - drop package objects 
-- install test - install test objects
-- uninstall test - uninstall test objects
-- test - run test
-- create synonyms - create synonyms for your package's API in other schema
-- drop synonyms - drop thode API synonyms
+
+**schema using your package commands**
+
+- set dependency reference owner - create synonyms for your package's API in other schema, which objects depend on your package's public API
+- unset dependency reference owner - drop those API synonyms
 
 ## SQL*Plus Best Practice
 
@@ -86,9 +109,11 @@ Place these scripts in a package root directory.
 
 ### create
 
-Creates database users and grants required privileges. It's intended to be run by privileged user. Create separate grant files `module/grant_&g_environment..sql` with all required grants, for easier review of required grants.
+Creates database users and grants required privileges. It's intended to be run by privileged user.
 
-> Specify minimal required privileges for privileged user (e.g.  `create any table`), at least in comments of the **create** script, ideally as a separate grant script
+Create separate grant file `module/dba/schema_grant.sql` with all required package schema grants, for granting required privileges to existing schema (e.g. when your package is installed as peer in others package schema) and easier review of required grants.
+
+Create separate grant file `module/dba/deployer_grant.sql` where you specify minimal required privileges for privileged user.
 
 <!-- TODO: create both deployer_privs_grant, deployer_privs_revoke scripts? -->
 
@@ -106,7 +131,7 @@ define g_envirnment = &1
 Sample call
 
 ```
-$ sqlplus sys/oracle@local as sysdba @create development
+$ sqlplus sys/oracle@local as sysdba @create
 ```
 
 ### drop
@@ -122,6 +147,16 @@ Sample call
 
 ```
 $ sqlplus sys/oracle@local as sysdba @drop development
+```
+
+### grant 
+
+Grants required privileges to `packageSchema`. Intended to be run under privileged user.
+
+Sample call
+
+```
+$ sql / as sysdba @grant <environment>
 ```
 
 ### install
@@ -155,15 +190,15 @@ $ sqlplus <userName>/<password>@<connectString> @install <privileges>
 
 Uninstalls package.
 
-Script is intended to be run in target schema, where is your package installed
+Script is intended to be run in `packageSchema` schema, where is your package installed.
 
 ```
-$ sqlplus <userName>/<password>@<connectString> @uninstall
+$ sqlplus <packageSchema>/<password>@<connectString> @uninstall
 ```
 
 ### set\_dependency\_ref\_owner
 
-creates synonyms for your public API (packages, views, ...) in user which is using your package
+Creates synonyms in `userUsingYourPackage` schema for your public API in `publicPackageSchema` schema
 
 ```
 $ sqlplus <userUsingYourPackage>/<password>@<connectString> @set_dependency_ref_owner <publicPackageSchema>
@@ -171,7 +206,7 @@ $ sqlplus <userUsingYourPackage>/<password>@<connectString> @set_dependency_ref_
 
 ### unset\_dependency\_ref\_owner
 
-drop synonyms for your public API
+Drops synonyms in `userUsingYourPackage` schema for your public API in `publicPackageSchema` schema
 
 ```
 $ sqlplus <userUsingYourPackage>/<password>@<connectString> @unset_dependency_ref_owner <publicPackageSchema>
