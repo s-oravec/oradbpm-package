@@ -1,10 +1,15 @@
 create or replace package template_impl as
 
+    function dummy return varchar2;
 
 end;
 /
 create or replace package body template_impl as
 
+    function dummy return varchar2 is
+    begin
+        return 'X';
+    end;
 
 end;
 /
