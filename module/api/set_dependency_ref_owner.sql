@@ -1,2 +1,2 @@
-prompt .. Creating synonym TEMPLATE for &&g_schema_name..TEMPLATE
-create synonym template for &&g_schema_name..template;
+prompt .. Creating synonym INVOICER for &&g_schema_name..INVOICER
+create synonym invoicer for &&g_schema_name..invoicer;

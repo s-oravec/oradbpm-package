@@ -1,2 +1,2 @@
-prompt .. Granting EXECUTE on TEMPLATE package to PUBLIC
-grant execute on template to public;
+prompt .. Granting EXECUTE on INVOICER package to PUBLIC
+grant execute on invoicer to public;

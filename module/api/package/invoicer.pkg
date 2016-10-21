@@ -1,4 +1,4 @@
-create or replace package template as
+create or replace package invoicer as
 
     -- Package name
     PACKAGE_NAME   constant varchar2(30) := '&&g_package_name';
@@ -16,7 +16,7 @@ create or replace package template as
 
 end;
 /
-create or replace package body template as
+create or replace package body invoicer as
 
     function get_package_name return varchar2 is
     begin
@@ -35,7 +35,7 @@ create or replace package body template as
 
     function dummy return varchar2 is
     begin
-        return template_impl.dummy;
+        return invoicer_impl.dummy;
     end;
 
 end;

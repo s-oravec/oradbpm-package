@@ -1,2 +1,2 @@
-prompt .. Creating package TEMPLATE
-@@package/template.pkg
+prompt .. Creating package INVOICER
+@@package/invoicer.pkg

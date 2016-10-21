@@ -7,7 +7,7 @@ set lines    4000
 set feedback off
 
 rem Package name
-define g_package_name="TEMPLATE"
+define g_package_name="INVOICER"
 
 rem SQL name compatible version string
 define g_sql_version = "000100"

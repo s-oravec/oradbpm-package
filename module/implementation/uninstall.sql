@@ -1,3 +1,3 @@
-prompt .. Dropping package TEMPLATE_IMPL
-drop package template_impl;
+prompt .. Dropping package INVOICER_IMPL
+drop package invoicer_impl;
 
