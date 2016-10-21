@@ -1,5 +1,4 @@
-prompt Undefine globals
-
+undefine g_current_schema
 undefine g_package_name
 undefine g_sql_version
 undefine g_semver_version
