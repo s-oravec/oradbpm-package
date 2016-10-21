@@ -43,15 +43,20 @@ create or replace package body slogger_impl as
     ) is
     begin
         dbms_output.put_line(
+            '['
+            || substr(to_char(systimestamp, 'yyyy-mm-dd hh24:mi:ss.ff'), 1, 26)
+            || ']'
+            || ' '
             -- prompt using log level
-            case p_log_level
-                when LOG_LEVEL_DEBUG then '.  >'
-                when LOG_LEVEL_INFO then 'INF>'
-                when LOG_LEVEL_ERROR then 'ERR>'
-                else raise_unknown_log_level(p_log_level)
-            end ||
+            || case p_log_level
+                  when LOG_LEVEL_DEBUG then '[DEBUG]'
+                  when LOG_LEVEL_INFO  then '[INFO] '
+                  when LOG_LEVEL_ERROR then '[ERROR]'
+                  else raise_unknown_log_level(p_log_level)
+              end
+            || ' '
             -- append message
-            replace(replace(replace(p_message, '$1', p_value_1), '$2', p_value_2), '$3', p_value_3)
+            || replace(replace(replace(p_message, '$1', p_value_1), '$2', p_value_2), '$3', p_value_3)
         );
     end;
 

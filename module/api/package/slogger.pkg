@@ -36,24 +36,24 @@ create or replace package slogger as
         log_level in log_level_type default LOG_LEVEL_DEBUG
     );
 
-    -- log_debug - logs with `log_level = LOG_LEVEL_DEBUG`
-    procedure log_debug (
+    -- logs with `log_level = LOG_LEVEL_DEBUG`
+    procedure debug (
         message in varchar2,
         value_1 in varchar2 default null,
         value_2 in varchar2 default null,
         value_3 in varchar2 default null
     );
 
-    -- log_error - logs with `log_level = LOG_LEVEL_ERROR`
-    procedure log_error (
+    -- logs with `log_level = LOG_LEVEL_ERROR`
+    procedure error (
         message in varchar2,
         value_1 in varchar2 default null,
         value_2 in varchar2 default null,
         value_3 in varchar2 default null
     );
 
-    -- log_info - logs with `log_level = LOG_LEVEL_INFO`
-    procedure log_info (
+    -- logs with `log_level = LOG_LEVEL_INFO`
+    procedure info (
         message in varchar2,
         value_1 in varchar2 default null,
         value_2 in varchar2 default null,
@@ -90,7 +90,7 @@ create or replace package body slogger as
         slogger_impl.log(message, value_1, value_2, value_3, log_level);
     end;
 
-    procedure log_debug (
+    procedure debug (
         message in varchar2,
         value_1 in varchar2 default null,
         value_2 in varchar2 default null,
@@ -100,7 +100,7 @@ create or replace package body slogger as
         slogger_impl.log(message, value_1, value_2, value_3, slogger_impl.LOG_LEVEL_DEBUG);
     end;
 
-    procedure log_error (
+    procedure error (
         message in varchar2,
         value_1 in varchar2 default null,
         value_2 in varchar2 default null,
@@ -110,7 +110,7 @@ create or replace package body slogger as
         slogger_impl.log(message, value_1, value_2, value_3, slogger_impl.LOG_LEVEL_ERROR);
     end;
 
-    procedure log_info (
+    procedure info (
         message in varchar2,
         value_1 in varchar2 default null,
         value_2 in varchar2 default null,
