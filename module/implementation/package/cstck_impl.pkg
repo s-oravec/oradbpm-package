@@ -8,14 +8,43 @@ end;
 /
 create or replace package body cstck_impl as
 
+    -- this > package api > my api > my implementation
+    gc_THIS_DYNAMIC_DEPTH constant pls_integer := 4;
+
+    -- caller > this > pacakge api > my api > my implementation
+    gc_CALLER_DYNAMIC_DEPTH constant pls_integer := 5;
+
+    function getQualifiedNameAtDepth(p_depth in pls_integer) return varchar2 is
+        ltab_qualifiedName   utl_call_stack.unit_qualified_name;
+        l_result             varchar2(255);
+        le_badDepthIndicator exception;
+        pragma exception_init(e_badDepthIndicator, -64610);
+    begin
+        ltab_qualifiedName := utl_call_stack.subprogram(dynamic_depth => p_depth);
+        --
+        for idx in 1 .. ltab_qualifiedName.count loop
+            if idx = 1 then
+                l_result := ltab_qualifiedName(idx);
+            else
+                l_result := l_result || '.' || ltab_qualifiedName(idx);
+            end if;
+        end loop;
+        --
+        return l_result;
+        --
+    exception
+        when le_badDepthIndicator then
+            return 'TOP_LEVEL_BLOCK';
+    end;
+
     function this return varchar2 is
     begin
-        return 'undefined';
+        return getQualifiedNameAtDepth(gc_THIS_DYNAMIC_DEPTH);
     end;
 
     function caller return varchar2 is
     begin
-        return 'undefined';
+        return getQualifiedNameAtDepth(gc_CALLER_DYNAMIC_DEPTH);
     end;
 
 end;
