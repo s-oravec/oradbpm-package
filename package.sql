@@ -16,7 +16,7 @@ rem full semver version string
 define g_semver_version = "0.1.0"
 
 rem get current schema
-define g_current_schema = &&_USER
+define g_current_schema = "&&_USER"
 column current_schema new_value g_current_schema
 set termout off
 select sys_context('userenv','current_schema') as current_schema from dual;
