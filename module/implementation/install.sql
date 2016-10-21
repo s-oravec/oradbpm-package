@@ -1,2 +1,2 @@
-prompt .. Creating package TEMPLATE_IMPL
-@@package/template_impl.pkg
+prompt .. Creating package SLOGGER_IMPL
+@@package/slogger_impl.pkg

@@ -1,2 +1,2 @@
-prompt .. Dropping synonym TEMPLATE
-drop synonym template;
+prompt .. Dropping synonym SLOGGER
+drop synonym slogger;

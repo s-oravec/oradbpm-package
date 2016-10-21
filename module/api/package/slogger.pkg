@@ -1,0 +1,125 @@
+create or replace package slogger as
+
+    -- Simple Logger - Logs to `DBMS_OUTPUT` only.
+
+    -- Package name
+    PACKAGE_NAME   constant varchar2(30) := '&&g_package_name';
+    function get_package_name return varchar2;
+
+    -- Package SQL Name compatible version
+    SQL_VERSION    constant varchar2(30) := '&&g_sql_version';
+    function get_sql_version return varchar2;
+
+    -- Semver version
+    SEMVER_VERSION constant varchar2(30) := '&&g_semver_version';
+    function get_semver_version return varchar2;
+
+    subtype log_level_type is varchar2(1);
+
+    -- Log levels
+    LOG_LEVEL_DEBUG constant log_level_type := 'D';
+    LOG_LEVEL_ERROR constant log_level_type := 'E';
+    LOG_LEVEL_INFO  constant log_level_type := 'I';
+
+    --
+    -- logs message with log level
+    --
+    -- - message - log message, with $n placeholders
+    -- - value_1, ... - placeholder n value - $n in message is replacede by value_n
+    -- - log_level - message log level - default is `LOG_LEVEL_DEBUG`
+    --
+    procedure log (
+        message   in varchar2,
+        value_1   in varchar2 default null,
+        value_2   in varchar2 default null,
+        value_3   in varchar2 default null,
+        log_level in log_level_type default LOG_LEVEL_DEBUG
+    );
+
+    -- log_debug - logs with `log_level = LOG_LEVEL_DEBUG`
+    procedure log_debug (
+        message in varchar2,
+        value_1 in varchar2 default null,
+        value_2 in varchar2 default null,
+        value_3 in varchar2 default null
+    );
+
+    -- log_error - logs with `log_level = LOG_LEVEL_ERROR`
+    procedure log_error (
+        message in varchar2,
+        value_1 in varchar2 default null,
+        value_2 in varchar2 default null,
+        value_3 in varchar2 default null
+    );
+
+    -- log_info - logs with `log_level = LOG_LEVEL_INFO`
+    procedure log_info (
+        message in varchar2,
+        value_1 in varchar2 default null,
+        value_2 in varchar2 default null,
+        value_3 in varchar2 default null
+    );
+
+end;
+/
+create or replace package body slogger as
+
+    function get_package_name return varchar2 is
+    begin
+        return PACKAGE_NAME;
+    end;
+
+    function get_sql_version return varchar2 is
+    begin
+        return SQL_VERSION;
+    end;
+
+    function get_semver_version return varchar2 is
+    begin
+        return SEMVER_VERSION;
+    end;
+
+    procedure log (
+        message   in varchar2,
+        value_1   in varchar2 default null,
+        value_2   in varchar2 default null,
+        value_3   in varchar2 default null,
+        log_level in log_level_type default LOG_LEVEL_DEBUG
+    ) is
+    begin
+        slogger_impl.log(message, value_1, value_2, value_3, log_level);
+    end;
+
+    procedure log_debug (
+        message in varchar2,
+        value_1 in varchar2 default null,
+        value_2 in varchar2 default null,
+        value_3 in varchar2 default null
+    ) is
+    begin
+        slogger_impl.log(message, value_1, value_2, value_3, slogger_impl.LOG_LEVEL_DEBUG);
+    end;
+
+    procedure log_error (
+        message in varchar2,
+        value_1 in varchar2 default null,
+        value_2 in varchar2 default null,
+        value_3 in varchar2 default null
+    ) is
+    begin
+        slogger_impl.log(message, value_1, value_2, value_3, slogger_impl.LOG_LEVEL_ERROR);
+    end;
+
+    procedure log_info (
+        message in varchar2,
+        value_1 in varchar2 default null,
+        value_2 in varchar2 default null,
+        value_3 in varchar2 default null
+    ) is
+    begin
+        slogger_impl.log(message, value_1, value_2, value_3, slogger_impl.LOG_LEVEL_INFO);
+    end;
+
+end;
+/
+

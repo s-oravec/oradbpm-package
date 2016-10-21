@@ -1,3 +1,3 @@
-prompt .. Dropping package TEMPLATE_IMPL
-drop package template_impl;
+prompt .. Dropping package SLOGGER_IMPL
+drop package slogger_impl;
 

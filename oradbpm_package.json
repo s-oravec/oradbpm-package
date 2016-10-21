@@ -1,7 +1,7 @@
 {
-  "name": "template",
+  "name": "slogger",
   "version": "0.0.1",
-  "description": "OraDBPM Package template",
+  "description": "OraDBPM Package slogger",
   "author" : "Štefan Oravec <stefan.oravec@me.com>",
   "license": "MIT",
   "repository": {

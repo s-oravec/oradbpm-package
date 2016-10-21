@@ -1,0 +1,60 @@
+create or replace package slogger_impl as
+
+    -- Simple Logger Implementation - Logs to `DBMS_OUTPUT` only.
+
+    subtype log_level_type is varchar2(1);
+
+    -- Log levels
+    LOG_LEVEL_DEBUG constant log_level_type := 'D';
+    LOG_LEVEL_ERROR constant log_level_type := 'E';
+    LOG_LEVEL_INFO  constant log_level_type := 'I';
+
+    --
+    -- logs message with log level
+    --
+    -- - message - log message, with $n placeholders
+    -- - value_1, ... - placeholder n value - $n in message is replacede by value_n
+    -- - log_level - message log level
+    --
+    procedure log (
+        p_message   in varchar2,
+        p_value_1   in varchar2 default null,
+        p_value_2   in varchar2 default null,
+        p_value_3   in varchar2 default null,
+        p_log_level in log_level_type
+    );
+
+
+end;
+/
+create or replace package body slogger_impl as
+
+    function raise_unknown_log_level(p_log_level in log_level_type) return log_level_type is
+    begin
+        raise_application_error(-20000, 'Unknown log level: ' || p_log_level);
+    end;
+
+    procedure log (
+        p_message   in varchar2,
+        p_value_1   in varchar2 default null,
+        p_value_2   in varchar2 default null,
+        p_value_3   in varchar2 default null,
+        p_log_level in log_level_type
+    ) is
+    begin
+        dbms_output.put_line(
+            -- prompt using log level
+            case p_log_level
+                when LOG_LEVEL_DEBUG then '.  >'
+                when LOG_LEVEL_INFO then 'INF>'
+                when LOG_LEVEL_ERROR then 'ERR>'
+                else raise_unknown_log_level(p_log_level)
+            end ||
+            -- append message
+            replace(replace(replace(p_message, '$1', p_value_1), '$2', p_value_2), '$3', p_value_3)
+        );
+    end;
+
+end;
+/
+

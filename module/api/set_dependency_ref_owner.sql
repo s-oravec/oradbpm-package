@@ -1,2 +1,2 @@
-prompt .. Creating synonym TEMPLATE for &&g_schema_name..TEMPLATE
-create synonym template for &&g_schema_name..template;
+prompt .. Creating synonym SLOGGER for &&g_schema_name..SLOGGER
+create synonym slogger for &&g_schema_name..slogger;
