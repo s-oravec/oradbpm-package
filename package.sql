@@ -15,6 +15,13 @@ define g_sql_version = "000100"
 rem full semver version string
 define g_semver_version = "0.1.0"
 
+rem get current schema
+define g_current_schema = &&_USER
+column current_schema new_value g_current_schema
+set termout off
+select sys_context('userenv','current_schema') as current_schema from dual;
+set termout on
+
 rem schema name
 define g_schema_name  = &&g_package_name._&&g_sql_version
 define g_schema_pwd   = &&g_schema_name
@@ -27,6 +34,7 @@ prompt Loaded package
 prompt package name      = &&g_package_name
 prompt sql version       = &&g_sql_version
 prompt semver version    = &&g_semver_version
+prompt current schema    = &&g_current_schema
 prompt default schema    = &&g_schema_name
 prompt schema password   = ********
 prompt schema tablespace = &&g_schema_tbspc
