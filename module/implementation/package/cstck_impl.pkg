@@ -1,0 +1,23 @@
+create or replace package cstck_impl as
+
+    function this return varchar2;
+
+    function caller return varchar2;
+
+end;
+/
+create or replace package body cstck_impl as
+
+    function this return varchar2 is
+    begin
+        return 'undefined';
+    end;
+
+    function caller return varchar2 is
+    begin
+        return 'undefined';
+    end;
+
+end;
+/
+

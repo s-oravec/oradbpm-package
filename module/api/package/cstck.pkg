@@ -12,7 +12,11 @@ create or replace package cstck as
     SEMVER_VERSION constant varchar2(30) := '&&g_semver_version';
     function get_semver_version return varchar2;
 
-    function dummy return varchar2;
+    -- Returns qualified name of **this** = method calling cstck
+    function this return varchar2;
+
+    -- Returns qualified name of caller of **this**
+    function caller return varchar2;
 
 end;
 /
@@ -33,9 +37,14 @@ create or replace package body cstck as
         return SEMVER_VERSION;
     end;
 
-    function dummy return varchar2 is
+    function this return varchar2 is
     begin
-        return cstck_impl.dummy;
+        return cstck_impl.this;
+    end;
+
+    function caller return varchar2 is
+    begin
+        return cstck_impl.caller;
     end;
 
 end;
