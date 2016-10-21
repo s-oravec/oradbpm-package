@@ -1,2 +1,2 @@
-prompt .. Dropping package TEMPLATE
-drop package template;
+prompt .. Dropping package CSTCK
+drop package cstck;

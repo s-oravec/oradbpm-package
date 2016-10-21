@@ -1,2 +1,2 @@
-prompt .. Creating package TEMPLATE
-@@package/template.pkg
+prompt .. Creating package CSTCK
+@@package/cstck.pkg

@@ -1,8 +1,8 @@
 # OraDBPM Package Template and Guide
 
-This repo represents template of released version of OraDBPM Package. This is, how it should look after you build it from you source.
+This repo represents cstck of released version of OraDBPM Package. This is, how it should look after you build it from you source.
 
-> The way you keep your source and build the release is not issue discussed in this document or the template implementation.
+> The way you keep your source and build the release is not issue discussed in this document or the cstck implementation.
 
 ## Main ideas
 

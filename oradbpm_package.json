@@ -1,7 +1,7 @@
 {
-  "name": "template",
+  "name": "cstck",
   "version": "0.0.1",
-  "description": "OraDBPM Package template",
+  "description": "OraDBPM Package cstck",
   "author" : "Štefan Oravec <stefan.oravec@me.com>",
   "license": "MIT",
   "repository": {

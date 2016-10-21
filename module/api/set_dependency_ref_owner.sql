@@ -1,2 +1,2 @@
-prompt .. Creating synonym TEMPLATE for &&g_schema_name..TEMPLATE
-create synonym template for &&g_schema_name..template;
+prompt .. Creating synonym CSTCK for &&g_schema_name..CSTCK
+create synonym cstck for &&g_schema_name..cstck;
