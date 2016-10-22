@@ -1,0 +1,17 @@
+create table invoicer_t_invoice (
+    id           integer,
+    beneficiary  invoicer_contact not null,
+    benefactor   invoicer_contact not null,
+    due          date not null,
+    created      date default sysdate,
+    paid         date,
+    total_amount number not null,
+    due_amount   number not null,
+    status       varchar2(30)
+);
+
+alter table invoicer_t_invoice
+    add constraint invoicer_t_invoice_pk
+    primary key (id)
+;
+

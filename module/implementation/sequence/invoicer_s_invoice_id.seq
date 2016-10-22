@@ -1,0 +1,1 @@
+create sequence invoicer_s_invoice_id start with 1 nocache;

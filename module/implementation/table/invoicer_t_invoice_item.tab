@@ -1,0 +1,10 @@
+create table invoicer_t_invoice_item (
+    id_invoice integer not null,
+    position   integer not null,
+    item       invoicer_invoice_item
+);
+
+alter table invoicer_t_invoice_item
+    add constraint invoicer_t_invoice_item_pk
+    primary key (id_invoice, position)
+;

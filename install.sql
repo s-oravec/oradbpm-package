@@ -24,6 +24,8 @@ prompt Installing package API
 prompt Granting privileges on package API
 @module/api/grant_&&l_privileges..sql
 
+show error
+
 rem undefine locals
 undefine l_privileges
 

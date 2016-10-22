@@ -1,14 +1,108 @@
 create or replace package invoicer_impl as
 
-    function dummy return varchar2;
+    -- saves invoice
+    procedure create_invoice(p_invoice in out nocopy invoicer_invoice);
+
+    -- cancels invoice
+    procedure cancel_invoice(p_id in integer);
+
+    -- pay invoice
+    procedure pay_invoice(
+        p_id          in integer,
+        p_amount_paid in number
+    );
+
+    -- ger invoice by id
+    function invoice_by_id(p_id in integer) return invoicer_invoice;
 
 end;
 /
 create or replace package body invoicer_impl as
 
-    function dummy return varchar2 is
+    INVOICE_DUE       constant varchar2(30) := 'DUE';
+    INVOICE_PAID      constant varchar2(30) := 'PAID';
+    INVOICE_CANCELLED constant varchar2(30) := 'CANCELLED';
+
+    procedure create_invoice(p_invoice in out nocopy invoicer_invoice) is
     begin
-        return 'X';
+        p_invoice.id      := invoicer_s_invoice_id.nextval;
+        p_invoice.created := sysdate;
+        p_invoice.status  := INVOICE_DUE;
+        --
+        select sum(amount * price)
+          into p_invoice.total_amount
+          from table(p_invoice.items)
+        ;
+        p_invoice.due_amount := p_invoice.total_amount;
+        --
+        insert into invoicer_t_invoice (id, beneficiary, benefactor, due, created, total_amount, due_amount, status)
+        values (
+            p_invoice.id,
+            p_invoice.beneficiary,
+            p_invoice.benefactor,
+            p_invoice.due,
+            p_invoice.created,
+            p_invoice.total_amount,
+            p_invoice.due_amount,
+            p_invoice.status
+        );
+        --
+        insert
+          into invoicer_t_invoice_item
+        select p_invoice.id, rownum, invoicer_invoice_item(name, amount, price, tax)
+          from table(p_invoice.items)
+        ;
+    end;
+
+    procedure cancel_invoice(p_id in integer) is
+    begin
+        update invoicer_t_invoice
+           set status = INVOICE_CANCELLED
+         where id = p_id;
+    end;
+
+    procedure pay_invoice (
+        p_id          in integer,
+        p_amount_paid in number
+    ) is
+    begin
+        update invoicer_t_invoice
+           set due_amount = due_amount - p_amount_paid,
+               status     = case when due_amount - p_amount_paid <= 0 then INVOICE_PAID else status end,
+               paid       = case when due_amount - p_amount_paid <= 0 then sysdate else paid end
+         where id = p_id
+           and status != INVOICE_CANCELLED
+        ;
+    end;
+
+    function invoice_by_id(p_id in integer) return invoicer_invoice is
+        l_result invoicer_invoice;
+    begin
+        with invoice_items as (
+            select cast(collect(item) as invoicer_invoice_items) as items
+              from invoicer_t_invoice_item
+             where id_invoice = p_id
+             order by position
+        )
+        select invoicer_invoice(
+                   id           => id,
+                   beneficiary  => beneficiary,
+                   benefactor   => benefactor,
+                   items        => items,
+                   due          => due,
+                   created      => created,
+                   paid         => paid,
+                   total_amount => total_amount,
+                   due_amount   => due_amount,
+                   status       => status
+               )
+          into l_result
+          from invoicer_t_invoice, invoice_items
+         where id = p_id
+        ;
+        --
+        return l_result;
+        --
     end;
 
 end;

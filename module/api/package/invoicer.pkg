@@ -12,7 +12,19 @@ create or replace package invoicer as
     SEMVER_VERSION constant varchar2(30) := '&&g_semver_version';
     function get_semver_version return varchar2;
 
-    function dummy return varchar2;
+    -- creates invoice
+    procedure create_invoice(invoice in out nocopy invoicer_invoice);
+
+    -- cancels invoice
+    procedure cancel_invoice(id in integer);
+
+    -- pay invoice
+    procedure pay_invoice(
+        id          in integer,
+        amount_paid in number
+    );
+
+    function invoice_by_id(id in integer) return invoicer_invoice;
 
 end;
 /
@@ -33,9 +45,28 @@ create or replace package body invoicer as
         return SEMVER_VERSION;
     end;
 
-    function dummy return varchar2 is
+    procedure create_invoice(invoice in out nocopy invoicer_invoice) is
     begin
-        return invoicer_impl.dummy;
+        invoicer_impl.create_invoice(invoice);
+    end;
+
+    procedure cancel_invoice(id in integer) is
+    begin
+        invoicer_impl.cancel_invoice(id);
+    end;
+
+    procedure pay_invoice (
+        id          in integer,
+        amount_paid in number
+    ) is
+    begin
+        invoicer_impl.pay_invoice(id, amount_paid);
+    end;
+
+    function invoice_by_id(id in integer) return invoicer_invoice
+    is
+    begin
+        return invoicer_impl.invoice_by_id(id);
     end;
 
 end;
