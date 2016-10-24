@@ -1,0 +1,107 @@
+create or replace package blog as
+
+    -- Package name
+    PACKAGE_NAME   constant varchar2(30) := '&&g_package_name';
+    function get_package_name return varchar2;
+
+    -- Package SQL Name compatible version
+    SQL_VERSION    constant varchar2(30) := '&&g_sql_version';
+    function get_sql_version return varchar2;
+
+    -- Semver version
+    SEMVER_VERSION constant varchar2(30) := '&&g_semver_version';
+    function get_semver_version return varchar2;
+
+    subtype topic_type is varchar2(4000);
+    subtype message_type is varchar2(4000);
+    subtype regexp_type is varchar2(4000);
+
+    type event_type is record (
+        id                integer,
+        topic             topic_type,
+        message           message_type,
+        timestamp_created timestamp
+    );
+
+    type topic_table_type is table of topic_type;
+    type event_table_type is table of event_type;
+
+    procedure log (
+        topic   in topic_type,
+        message in message_type
+    );
+
+    function topics (
+        topic_regexp in regexp_type
+    ) return topic_table_type;
+
+    function events (
+        topic_regexp in regexp_type,
+        since        in date
+    ) return event_table_type;
+
+end;
+/
+create or replace package body blog as
+
+    function get_package_name return varchar2 is
+    begin
+        return PACKAGE_NAME;
+    end;
+
+    function get_sql_version return varchar2 is
+    begin
+        return SQL_VERSION;
+    end;
+
+    function get_semver_version return varchar2 is
+    begin
+        return SEMVER_VERSION;
+    end;
+
+    procedure log (
+        topic   in topic_type,
+        message in message_type
+    ) is
+    begin
+        blog_impl.log(topic, message);
+    end;
+
+    function topics (
+        topic_regexp in regexp_type
+    ) return topic_table_type is
+        ltab_topics blog_impl.topic_table_type;
+        l_result    topic_table_type := topic_table_type();
+    begin
+        ltab_topics := blog_impl.topics(topic_regexp);
+        if ltab_topics.count != 0 then
+            l_result.extend(ltab_topics.count);
+            for idx in 1 .. ltab_topics.count loop
+                l_result(idx) := ltab_topics(idx);
+            end loop;
+        end if;
+        return l_result;
+    end;
+
+    function events (
+        topic_regexp in regexp_type,
+        since        in date
+    ) return event_table_type is
+        ltab_events blog_impl.message_table_type;
+        l_result    event_table_type := event_table_type();
+    begin
+        ltab_events := blog_impl.messages(topic_regexp, since);
+        if ltab_events.count != 0 then
+            l_result.extend(ltab_events.count);
+            for idx in 1 .. ltab_events.count loop
+                l_result(idx).id := ltab_events(idx).id;
+                l_result(idx).topic := ltab_events(idx).topic;
+                l_result(idx).message := ltab_events(idx).message;
+                l_result(idx).timestamp_created := ltab_events(idx).timestamp_created;
+            end loop;
+        end if;
+        return l_result;
+    end;
+
+end;
+/

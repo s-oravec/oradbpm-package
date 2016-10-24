@@ -1,2 +1,2 @@
-prompt .. Creating package TEMPLATE
+prompt .. Creating package BLOG
 @@package/blog.pkg

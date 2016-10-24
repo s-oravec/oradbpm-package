@@ -1,0 +1,81 @@
+create or replace package blog_impl as
+
+    subtype regexp_type is varchar2(4000);
+
+    type topic_table_type is table of blog_t_message.topic%type;
+    type message_table_type is table of blog_t_message%rowtype;
+
+    procedure log (
+        p_topic   in blog_t_message.topic%type,
+        p_message in blog_t_message.message%type
+    );
+
+    function topics (
+        p_topic_regexp in regexp_type
+    ) return topic_table_type;
+
+    function messages (
+        p_topic_regexp in regexp_type,
+        p_since        in date
+    ) return message_table_type;
+
+end;
+/
+create or replace package body blog_impl as
+
+    procedure log (
+        p_topic   in blog_t_message.topic%type,
+        p_message in blog_t_message.message%type
+    ) is
+    begin
+        insert into blog_t_message(
+            id,
+            topic,
+            message,
+            timestamp_created
+        ) values
+        (
+            blog_s_message_id.nextval,
+            p_topic,
+            p_message,
+            systimestamp
+        );
+    end;
+
+    function topics (
+        p_topic_regexp in regexp_type
+    ) return topic_table_type is
+        l_result topic_table_type;
+    begin
+        select distinct topic
+          bulk collect into l_result
+          from blog_t_message
+         where regexp_like(topic, p_topic_regexp)
+         order by 1
+        ;
+        --
+        return l_result;
+        --
+    end;
+
+    function messages (
+        p_topic_regexp in regexp_type,
+        p_since        in date
+    ) return message_table_type is
+        l_result message_table_type;
+    begin
+        select *
+          bulk collect into l_result
+          from blog_t_message
+         where regexp_like(topic, p_topic_regexp)
+           and timestamp_created >= p_since
+         order by timestamp_created
+        ;
+        --
+        return l_result;
+        --
+    end;
+
+end;
+/
+

@@ -1,0 +1,11 @@
+create table blog_t_message (
+    id                integer not null,
+    topic             varchar2(4000) not null,
+    message           varchar2(4000) not null,
+    timestamp_created timestamp not null
+);
+
+alter table blog_t_message
+    add constraint blog_t_message_pk
+    primary key (id)
+;

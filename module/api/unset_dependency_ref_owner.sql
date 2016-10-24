@@ -1,2 +1,2 @@
-prompt .. Dropping synonym TEMPLATE
+prompt .. Dropping synonym BLOG
 drop synonym blog;

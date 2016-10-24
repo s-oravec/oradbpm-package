@@ -1,0 +1,1 @@
+create sequence blog_s_message_id start with 1;

@@ -1,1 +1,5 @@
 .idea/
+/oradbpm_modules/peer/*
+!/oradbpm_modules/peer/readme.md
+/oradbpm_modules/public/*
+!/oradbpm_modules/public/readme.md

@@ -1,2 +1,2 @@
-prompt .. Creating synonym TEMPLATE for &&g_schema_name..TEMPLATE
+prompt .. Creating synonym BLOG for &&g_schema_name..BLOG
 create synonym blog for &&g_schema_name..blog;

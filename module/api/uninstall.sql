@@ -1,2 +1,2 @@
-prompt .. Dropping package TEMPLATE
+prompt .. Dropping package BLOG
 drop package blog;
