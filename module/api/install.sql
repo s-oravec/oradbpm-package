@@ -1,2 +1,2 @@
 prompt .. Creating package TEMPLATE
-@@package/template.pkg
+@@package/blog.pkg

@@ -1,2 +1,2 @@
 prompt .. Dropping synonym TEMPLATE
-drop synonym template;
+drop synonym blog;
