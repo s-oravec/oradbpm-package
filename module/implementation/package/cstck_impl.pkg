@@ -1,8 +1,8 @@
 create or replace package cstck_impl as
 
-    function this return varchar2;
+    function this(p_offset in pls_integer) return varchar2;
 
-    function caller return varchar2;
+    function caller(p_offset in pls_integer) return varchar2;
 
 end;
 /
@@ -18,7 +18,7 @@ create or replace package body cstck_impl as
         ltab_qualifiedName   utl_call_stack.unit_qualified_name;
         l_result             varchar2(255);
         le_badDepthIndicator exception;
-        pragma exception_init(e_badDepthIndicator, -64610);
+        pragma exception_init(le_badDepthIndicator, -64610);
     begin
         ltab_qualifiedName := utl_call_stack.subprogram(dynamic_depth => p_depth);
         --
@@ -37,14 +37,14 @@ create or replace package body cstck_impl as
             return 'TOP_LEVEL_BLOCK';
     end;
 
-    function this return varchar2 is
+    function this(p_offset in pls_integer) return varchar2 is
     begin
-        return getQualifiedNameAtDepth(gc_THIS_DYNAMIC_DEPTH);
+        return getQualifiedNameAtDepth(gc_THIS_DYNAMIC_DEPTH + p_offset) ;
     end;
 
-    function caller return varchar2 is
+    function caller(p_offset in pls_integer) return varchar2 is
     begin
-        return getQualifiedNameAtDepth(gc_CALLER_DYNAMIC_DEPTH);
+        return getQualifiedNameAtDepth(gc_CALLER_DYNAMIC_DEPTH + p_offset);
     end;
 
 end;

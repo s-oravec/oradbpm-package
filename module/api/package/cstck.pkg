@@ -13,10 +13,16 @@ create or replace package cstck as
     function get_semver_version return varchar2;
 
     -- Returns qualified name of **this** = method calling cstck
-    function this return varchar2;
+    --
+    -- @offset add offset to callstack depth
+    --
+    function this(offset in pls_integer) return varchar2;
 
     -- Returns qualified name of caller of **this**
-    function caller return varchar2;
+    --
+    -- @offset add offset to callstack depth
+    --
+    function caller(offset in pls_integer) return varchar2;
 
 end;
 /
@@ -37,14 +43,14 @@ create or replace package body cstck as
         return SEMVER_VERSION;
     end;
 
-    function this return varchar2 is
+    function this(offset in pls_integer) return varchar2 is
     begin
-        return cstck_impl.this;
+        return cstck_impl.this(offset);
     end;
 
-    function caller return varchar2 is
+    function caller(offset in pls_integer) return varchar2 is
     begin
-        return cstck_impl.caller;
+        return cstck_impl.caller(offset);
     end;
 
 end;
