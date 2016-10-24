@@ -11,4 +11,7 @@ grant create sequence to &&l_schema_name;
 prompt .. Granting CREATE TABLE to &&l_schema_name
 grant create table to &&l_schema_name;
 
+prompt .. Granting CREATE VIEW to &&l_schema_name
+grant create view to &&l_schema_name;
+
 undefine l_schema_name
