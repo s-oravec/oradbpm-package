@@ -6,9 +6,20 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/s-oravec/oradbpm-package.git"
+    "url": "https://github.com/s-oravec/oradbpm-package.git"
   },
   "keywords": [
     "SQL", "SQL*Plus", "SQL Plus", "SQLcl", "Oracle"
-  ]
+  ],
+  "dependencies": {
+    "blog" : {
+      "type": "git",
+      "url": "https://github.com/s-oravec/oradbpm-package.git#blog"
+    },
+    "slogger" : {
+      "type": "git",
+      "url": "https://github.com/s-oravec/oradbpm-package.git#slogger",
+      "peer": "true"
+    }
+  }
 }
