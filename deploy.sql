@@ -35,8 +35,13 @@ host git clone --branch cstck https://github.com/s-oravec/oradbpm-package oradbp
 host rm -rf oradbpm_modules/peer/cstck/.git
 rem
 
+
+rem 0. Configure schema mapping
+@package
+
 rem 1. Create schemas
 rem 1.1. Create this package schema
+@package
 @create configured
 
 rem 1.2. Create schems for public dependencies
@@ -44,15 +49,22 @@ cd oradbpm_modules/public/blog
 @create configured
 cd
 
-rem 2. Install
-rem 2.1. Install public dependencies
+rem 2. Install public dependencies
 cd oradbpm_modules/public/blog
 @package
 @set_current_schema &&g_schema_name
+define g_blog_schema = &&g_schema_name
 @install public
 cd
 
-rem 2.2. Install peer dependencies
+rem 3. set dependency referenced owner
+@package
+@set_current_schema &&g_schema_name
+cd oradbpm_modules/public/blog
+@set_dependency_ref_owner &&g_blog_schema
+cd
+
+rem 4. Install peer dependencies
 @package
 @set_current_schema &&g_schema_name
 cd
