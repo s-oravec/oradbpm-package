@@ -20,14 +20,17 @@ rem far future  : OraDBPM CLI will download packages stored in repository somewh
 rem
 rem download dependencies
 rem invoicer depends on blog installed as public
+host rm -rf oradbpm_modules/public/blog
 host git clone --branch blog https://github.com/s-oravec/oradbpm-package oradbpm_modules/public/blog
 host rm -rf oradbpm_modules/public/blog/.git
 rem
 rem invoicer dependes on slogger installed as peer
+host rm -rf oradbpm_modules/peer/slogger
 host git clone --branch slogger https://github.com/s-oravec/oradbpm-package oradbpm_modules/peer/slogger
 host rm -rf oradbpm_modules/peer/slogger/.git
 rem
 rem slogger depends on cstck installed as peer
+host rm -rf oradbpm_modules/peer/cstck
 host git clone --branch cstck https://github.com/s-oravec/oradbpm-package oradbpm_modules/peer/cstck
 host rm -rf oradbpm_modules/peer/cstck/.git
 rem
