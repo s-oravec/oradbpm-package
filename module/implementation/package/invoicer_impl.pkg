@@ -23,8 +23,11 @@ create or replace package body invoicer_impl as
     INVOICE_PAID      constant varchar2(30) := 'PAID';
     INVOICE_CANCELLED constant varchar2(30) := 'CANCELLED';
 
+    BLOG_TOPIC constant varchar2(30) := '/invoicer/invoice/';
+
     procedure create_invoice(p_invoice in out nocopy invoicer_invoice) is
     begin
+        slogger.log('p_invoice=$1', xmltype.createXml(p_invoice).extract('/').getClobVal());
         p_invoice.id      := invoicer_s_invoice_id.nextval;
         p_invoice.created := sysdate;
         p_invoice.status  := INVOICE_DUE;
@@ -35,6 +38,7 @@ create or replace package body invoicer_impl as
         ;
         p_invoice.due_amount := p_invoice.total_amount;
         --
+        slogger.log('inserting invoice');
         insert into invoicer_t_invoice (id, beneficiary, benefactor, due, created, total_amount, due_amount, status)
         values (
             p_invoice.id,
@@ -47,37 +51,51 @@ create or replace package body invoicer_impl as
             p_invoice.status
         );
         --
+        slogger.log('inserting invoice items');
         insert
           into invoicer_t_invoice_item
         select p_invoice.id, rownum, invoicer_invoice_item(name, amount, price, tax)
           from table(p_invoice.items)
         ;
+        blog.log(BLOG_TOPIC || p_invoice.id, 'Created.');
     end;
 
     procedure cancel_invoice(p_id in integer) is
     begin
+        slogger.log('p_id=$1', p_id);
+        slogger.info('updating invoice id=$1 setting status=$2', p_id, INVOICE_CANCELLED);
         update invoicer_t_invoice
            set status = INVOICE_CANCELLED
          where id = p_id;
+        blog.log(BLOG_TOPIC || p_id, 'Cancelled.');
     end;
 
     procedure pay_invoice (
         p_id          in integer,
         p_amount_paid in number
     ) is
+        l_due_amount invoicer_t_invoice.due_amount%type;
+        l_status     invoicer_t_invoice.status%type;
     begin
+        slogger.log('p_id=$1, p_amount_paid=$2', p_id, p_amount_paid);
+        slogger.info('updating invoice id=$1 decreasing due_amount by amount=$2', p_id, p_amount_paid);
         update invoicer_t_invoice
            set due_amount = due_amount - p_amount_paid,
                status     = case when due_amount - p_amount_paid <= 0 then INVOICE_PAID else status end,
                paid       = case when due_amount - p_amount_paid <= 0 then sysdate else paid end
          where id = p_id
            and status != INVOICE_CANCELLED
+         returning due_amount, status
+              into l_due_amount, l_status
         ;
+        slogger.info('updated invoice id=$1 new due_amount=$2 and new status=$2', p_id, l_due_amount, l_status);
+        blog.log(BLOG_TOPIC || p_id, 'Paid ' || p_amount_paid || '. Due amount is ' || l_due_amount || ' and status is ' || l_status);
     end;
 
     function invoice_by_id(p_id in integer) return invoicer_invoice is
         l_result invoicer_invoice;
     begin
+        slogger.log('p_id=$1', p_id);
         with invoice_items as (
             select cast(collect(item) as invoicer_invoice_items) as items
               from invoicer_t_invoice_item
@@ -100,6 +118,7 @@ create or replace package body invoicer_impl as
           from invoicer_t_invoice, invoice_items
          where id = p_id
         ;
+        slogger.log('invoice id=$1 found.', p_id);
         --
         return l_result;
         --
